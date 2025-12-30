@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* --- Welcome Section --- */
+    .welcome-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #e8f5e9;
+        padding: 10px 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        overflow: visible;
+        white-space: nowrap;
+    }
+
+    .welcome-box h2 {
+        margin: 0;
+        color: #2e7d32;
+    }
+
+    .logout-btn {
+        background: #f44336;
+        color: white;
+        padding: 8px 14px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .logout-btn:hover {
+        background: #d32f2f;
+    }
+
+    /* --- Categories --- */
+    .categories-container {
+        margin-bottom: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center the categories section */
+    }
+
+    .categories-container strong {
+        display: block;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .categories-scroll {
+        display: flex;
+        overflow-x: auto;
+        padding: 5px 0;
+        gap: 8px;
+        scrollbar-width: thin;  /* Firefox */
+        max-width: 100%; /* Ensure it fits page */
+    }
+
+    .categories-scroll::-webkit-scrollbar {
+        height: 6px;  /* Webkit scrollbar thickness */
+    }
+
+    .categories-scroll::-webkit-scrollbar-thumb {
+        background-color: #a5d6a7;
+        border-radius: 3px;
+    }
+
+    .categories-scroll::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+
+    .category {
+        flex: 0 0 auto;
+        padding: 4px 10px;
+        text-decoration: none;
+        color: #2e7d32;
+        font-weight: 500;
+        border-radius: 5px;
+        transition: background 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    .category:hover {
+        background: #a5d6a7;
+        color: #1b5e20;
+    }
+
+    .category.active {
+        font-weight: bold;
+        color: white;
+        background: #2e7d32;
+    }
+
+    /* --- Product Grid --- */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+        background: #fff;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .product-card h4 {
+        margin: 8px 0;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 10px;
+        margin: 3px 0;
+        font-size: 13px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-view { background: #1976d2; }
+    .btn-cart { background: #388e3c; }
+    .btn-wish { background: #757575; }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+</style>
+
+<!-- --- Welcome Section --- -->
+<div class="welcome-box">
+    <div>
+        {% if request.user.is_authenticated %}
+            <h2>Welcome, {{ request.user.get_full_name|default:request.user.username }}</h2>
+        {% else %}
+            <h2>Welcome, Guest</h2>
+        {% endif %}
+    </div>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    {% endif %}
+</div>
+
+<!-- --- Categories with horizontal scroll centered --- -->
+<div class="categories-container">
+    <strong>Categories:</strong>
+    <div class="categories-scroll">
+        <!-- 'All' link -->
+        {% if not selected_category %}
+            <span class="category active">All</span>
+        {% else %}
+            <a href="{% url 'customer_home' %}" class="category">All</a>
+        {% endif %}
+
+        <!-- Category links -->
+        {% for cat in categories %}
+            {% if selected_category and cat.id == selected_category.id %}
+                <span class="category active">{{ cat.name }}</span>
+            {% else %}
+                <a href="{% url 'products_by_category' cat.id %}" class="category">{{ cat.name }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- --- Products --- -->
+<div class="product-grid">
+    {% for p in products %}
+        <div class="product-card">
+            {% if p.image %}
+                <img src="{{ p.image.url }}" width="180" height="180" alt="{{ p.name }}">
+            {% endif %}
+            <h4>{{ p.name }}</h4>
+            <p>₹ {{ p.price }}</p>
+
+            {% if p.stock > 0 %}
+                <p style="color: green;">Available</p>
+            {% else %}
+                <p style="color: red;">Out of Stock</p>
+            {% endif %}
+
+            <!-- --- Buttons with login check --- -->
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'proinfo' p.id %}" class="btn btn-view">View</a><br>
+                {% if p.stock > 0 %}
+                    <a href="{% url 'addtocart' p.id %}" class="btn btn-cart">Add to Cart</a><br>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'proinfo' p.id %}" class="btn btn-view">View</a><br>
+                {% if p.stock > 0 %}
+                    <button class="btn btn-cart" onclick="alert('Login as customer to add product')">Add to Cart</button><br>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No products available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

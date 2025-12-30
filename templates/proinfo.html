@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div style="max-width: 800px; margin: 30px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; gap: 20px;">
+
+    <!-- Left section: Product info -->
+    <div style="flex: 2;">
+        <h2 style="margin-bottom: 10px;">{{ pro.name }}</h2>
+        <p><strong>Farmer:</strong> {{ pro.farmer.name }}</p>
+
+        <div style="margin-bottom: 15px;">
+            <strong>Description:</strong>
+            <p>{{ pro.description }}</p>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <strong>Stock:</strong> {{ pro.stock }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <strong>Price:</strong> ₹{{ pro.price }}
+        </div>
+
+        <p style="margin-bottom: 15px; font-weight:bold; color: {% if pro.stock > 0 %}green{% else %}red{% endif %};">
+            Status: {% if pro.stock > 0 %}Available{% else %}Out of stock{% endif %}
+        </p>
+
+        <!-- Buttons on same line -->
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            {% if pro.stock > 0 %}
+                <a href="{% url 'addtocart' pro.id %}">
+                    <button style="padding: 10px 20px; background-color: #28a745; color:white; border:none; border-radius:5px; cursor:pointer;">
+                        Add to Cart
+                    </button>
+                </a>
+            {% endif %}
+            <a href="{% url 'allproducts_all' %}">
+                <button style="padding: 10px 20px; background-color: #007bff; color:white; border:none; border-radius:5px; cursor:pointer;">
+                    Back to All Products
+                </button>
+            </a>
+        </div>
+
+        <!-- Star rating -->
+        <div style="position: relative; font-size: 24px; display: inline-block;">
+            <div style="color: #ccc;">
+                &#9733;&#9733;&#9733;&#9733;&#9733;
+            </div>
+            <div style="color: gold; position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; width: {{ rating_percent }}%;">
+                &#9733;&#9733;&#9733;&#9733;&#9733;
+             </div>
+
+            <span style="margin-left: 8px; font-size: 16px;">({{ pro.rating|floatformat:1 }} / 5)</span>
+        </div>
+
+    </div>
+
+    <!-- Right section: Product image -->
+    <div style="flex: 1; display: flex; justify-content: center; align-items: flex-start;">
+        {% if pro.image %}
+            <img src="{{ pro.image.url }}" alt="{{ pro.name }}"
+                 style="width: 250px; height: 250px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+        {% else %}
+            <div style="width: 250px; height: 250px; background-color: #eee; display: flex; justify-content: center; align-items: center; border-radius: 10px; color: #999; font-weight: bold;">
+                No Image
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

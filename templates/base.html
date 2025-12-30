@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Green Basket{% endblock %}</title>
+
+    {% load static %}
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* Push content below fixed navbar */
+        body {
+            padding-top: 80px; /* Adjust based on navbar height */
+        }
+
+        /* Navbar brand logo adjustment */
+        .navbar-brand img {
+            height: 80px; /* Adjust logo size */
+            width: auto;
+            margin-right: 10px;
+        }
+
+        /* Brand name font customization */
+        .navbar-brand span {
+            font-family: 'Pacifico', cursive; /* New font */
+            font-size: 2rem; /* Increase size */
+            color: #07b810; /* Organic green */
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .navbar-brand span:hover {
+            color: #1b5e20; /* Darker green on hover */
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 50px;
+            }
+            .navbar-brand span {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm" id="main-navbar">
+        <div class="container">
+            <!-- Brand with Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+                <img src="{% static 'img/logo.png' %}" alt="Green Basket Logo">
+                <span>Green Basket</span>
+            </a>
+
+            <!-- Toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+    
+                    <li class="nav-item"><a class="nav-link" href="{% url 'allproducts_all' %}">Products</a></li>
+                    
+
+                    <!-- Cart Icon -->
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="{% url 'cart_home' %}">
+                            <i class="bi bi-cart3" style="color:#333; font-size:1.2rem;"></i>
+                        </a>
+                    </li>
+
+                    <!-- Sign In / Logout / Welcome -->
+                     {% if user.is_authenticated %}
+                     <li class="nav-item ms-3 d-flex align-items-center">
+                        <span class="nav-link" style="color:#333; font-weight:500;">
+                            Welcome, {{ user.first_name|default:user.username }}
+                        </span>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right" style="color:#333; font-size:1.2rem;"></i> Logout
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="{% url 'login_page' %}">
+                            <i class="bi bi-lock" style="color:#333; font-size:1.2rem;"></i> Sign In
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Dynamic body padding to match navbar height -->
+    <script>
+        function adjustBodyPadding() {
+            const navbar = document.getElementById('main-navbar');
+            if(navbar){
+                document.body.style.paddingTop = navbar.offsetHeight + 'px';
+            }
+        }
+        window.addEventListener('load', adjustBodyPadding);
+        window.addEventListener('resize', adjustBodyPadding);
+    </script>
+</body>
+</html>

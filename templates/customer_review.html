@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="max-width:900px; margin:30px auto; font-family:Arial;">
+    <h2 style="text-align:center;">What Our Customers Say</h2>
+
+    {% if reviews %}
+        {% for review in reviews %}
+            <div style="margin-top:20px; padding:15px; border:1px solid #ddd; border-radius:10px;">
+                
+                <strong>{{ review.user.username }}</strong>
+                <span style="color:gray;"> • {{ review.created_at|date:"M d, Y" }}</span>
+
+                <p style="margin-top:10px;">{{ review.comment }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center; margin-top:20px;">
+            No reviews yet.
+        </p>
+    {% endif %}
+</div>
+
+{% endblock %}

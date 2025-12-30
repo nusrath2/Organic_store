@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="width:80%; margin:20px auto; font-family:Arial, sans-serif;">
+    <h2>Payment for Order #{{ order.id }}</h2>
+
+    <table border="1" cellpadding="10" style="width:100%; border-collapse:collapse;">
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>₹{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.price|floatformat:2|add:"0"|floatformat:2|floatformat:2|add:"0"|add:"0"|add:"0" }}{{ item.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3 style="text-align:right; margin-top:10px;">Grand Total: ₹{{ grand_total }}</h3>
+
+    <!-- Payment Options -->
+    <h3>Select Payment Method:</h3>
+    <form method="post" action="{% url 'process_payment' order.id %}">
+        {% csrf_token %}
+        <input type="radio" id="cod" name="payment_method" value="COD" checked>
+        <label for="cod">Cash on Delivery</label><br>
+
+        <input type="radio" id="upi" name="payment_method" value="UPI">
+        <label for="upi">UPI</label><br>
+
+        <input type="radio" id="card" name="payment_method" value="Card">
+        <label for="card">Debit / Credit Card</label><br><br>
+
+        <button type="submit" style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
+            Pay Now
+        </button>
+    </form>
+</div>
+
+{% endblock %}

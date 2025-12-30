@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <!-- Hero Section -->
+    <div class="container text-center mb-5">
+        <h1 class="display-4">About Green Basket</h1>
+        <p class="lead">Fresh, healthy, and sustainably-grown produce straight from our farms to your table.</p>
+    </div>
+
+    <!-- Who We Are Section -->
+    <div class="container mb-5">
+        <h2>Who We Are</h2>
+        <p>
+            We are a community of dedicated farmers, agronomists, and food enthusiasts committed to organic farming. 
+            By combining traditional farming wisdom with modern sustainable techniques, we cultivate crops that are 
+            not only good for your health but also gentle on the environment.
+        </p>
+    </div>
+
+    <!-- Our Promise Section -->
+    <div class="container mb-5">
+        <h2>Our Promise</h2>
+        <ul>
+            <li><strong>100% Organic:</strong> No synthetic pesticides or fertilizers—only natural, safe methods.</li>
+            <li><strong>Freshness Guaranteed:</strong> Harvested with care and delivered promptly to retain nutrients and taste.</li>
+            <li><strong>Supporting Farmers:</strong> Empowering local farmers with tools, knowledge, and fair market access.</li>
+            <li><strong>Sustainable Practices:</strong> Protecting the soil, water, and biodiversity for a healthier planet.</li>
+        </ul>
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <div class="container mb-5">
+        <h2>Why Choose Us?</h2>
+        <p>
+            Choosing Green Basket means choosing health, sustainability, and community. 
+            Every product you purchase helps create a better future for farmers and a cleaner, greener world. 
+            Join us on our journey to grow naturally, eat healthy, and live sustainably.
+        </p>
+    </div>
+
+    <!-- Meet the Farmers Section -->
+    <div class="container mb-5">
+        <h2 class="text-center mb-4">Meet the Farmers</h2>
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <img src="{% static 'img/farmer1.jpg' %}" alt="Farmer 1" class="img-fluid rounded-circle mb-2" style="width:150px; height:150px;">
+                <h5>John Doe</h5>
+                <p>Organic vegetable specialist with 10+ years of experience.</p>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <img src="{% static 'img/farmer2.jpg' %}" alt="Farmer 2" class="img-fluid rounded-circle mb-2" style="width:150px; height:150px;">
+                <h5>Jane Smith</h5>
+                <p>Expert in fruit cultivation and sustainable farming methods.</p>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <img src="{% static 'img/farmer3.jpg' %}" alt="Farmer 3" class="img-fluid rounded-circle mb-2" style="width:150px; height:150px;">
+                <h5>Robert Lee</h5>
+                <p>Passionate about organic grains and eco-friendly agriculture.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="container text-center">
+        <a href="{% url 'farmer_dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

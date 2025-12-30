@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .product-card {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+        background: #fff;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .product-card h4 {
+        margin: 8px 0;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 10px;
+        margin: 3px 0;
+        font-size: 13px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+    }
+
+    .btn-view { background: #1976d2; }
+    .btn-cart { background: #388e3c; }
+    .btn-wish { background: #757575; }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+</style>
+
+<h1 style="text-align: center;">All Products</h1>
+
+<div class="product-grid">
+    {% for product in products %}
+        <div class="product-card">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" width="180" height="180">
+            {% endif %}
+            <h4>{{ product.name }}</h4>
+            <p>₹ {{ product.price }}</p>
+
+            {% if product.stock > 0 %}
+                <p style="color: green;">Available</p>
+            {% else %}
+                <p style="color: red;">Out of Stock</p>
+            {% endif %}
+
+            <a href="{% url 'proinfo' product.id %}" class="btn btn-view">View Details</a><br>
+
+            {% if product.stock > 0 %}
+                <a href="{% url 'addtocart' product.id %}" class="btn btn-cart">Add to Cart</a><br>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No products available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

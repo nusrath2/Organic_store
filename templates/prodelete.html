@@ -1,0 +1,6 @@
+<p>Are you sure want to delete<strong>{{pro.name}}</strong> ?</p>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Delete"style="background-color:red; color:white; padding:5px 10px; border:none; border-radius:4px;">
+    <a href="{% url 'farmer_dashboard' %}"style="margin-left:10px;">Cancel</a>
+</form>

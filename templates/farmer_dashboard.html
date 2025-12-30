@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farmer Dashboard</title>
+    <style>
+        table {width: 100px; border-collapse: collapse;font-size: 18px; margin-top: 20px;}
+        th, td { border: 1px solid black; padding: 15px 20px ;text-align: center; }
+        th {font-size: 19px;background-color: #e8f5e9;  }
+        .btn { padding: 5px 10px; text-decoration: none; border: 1px solid #333; border-radius: 4px; }
+        .btn-edit { background-color: #4CAF50; color: white; }
+        .btn-delete { background-color: #f44336; color: white; }
+        .btn-add { background-color: #008CBA; color: white; margin-bottom: 15px; display: inline-block;font-size: 16px;padding: 10px 18px; }
+    </style>
+</head>
+<body>
+
+<h2>Welcome, {{ farmer.name }}</h2>
+<a href="{% url 'logout' %}" class="btn" style="background-color:#f39c12; color:white; float:right;">Logout</a>
+
+<!-- Add Product Button -->
+<a href="{% url 'add_product' %}" class="btn btn-add">Add Product</a>
+
+<!-- Summary (optional) -->
+<p>Total Products: {{ products.count }}</p>
+
+<!-- Products Table -->
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td><a href="{% url 'pro_edit' product.id %}" class="btn btn-edit">Edit</a></td>
+            <td><a href="{% url 'pro_delete' product.id %}" class="btn btn-delete">Delete</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No products added yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

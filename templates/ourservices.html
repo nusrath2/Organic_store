@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Our Services{% endblock %}
+
+{% block content %}
+<!-- Load Font Awesome (put this in base.html <head> if not already) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container py-5">
+    <h1 class="mb-4" style="text-align: center;">Our Services</h1>
+    <p class="text-center mb-5">Providing fresh, healthy, and sustainable produce straight from our farms to your doorstep.</p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
+        <!-- Service 1 -->
+        <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 20px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-leaf fa-3x" style="color: #4CAF50; margin-bottom: 15px;"></i>
+            <h3>Fresh Organic Produce</h3>
+            <p>Fruits and vegetables grown without chemicals or pesticides. Harvested daily for maximum freshness.</p>
+        </div>
+
+        <!-- Service 2 -->
+        <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 20px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-truck fa-3x" style="color: #FF9800; margin-bottom: 15px;"></i>
+            <h3>Home Delivery</h3>
+            <p>Convenient delivery right to your doorstep. Flexible subscription and one-time order options.</p>
+        </div>
+
+        <!-- Service 3 -->
+        <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 20px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-seedling fa-3x" style="color: #8BC34A; margin-bottom: 15px;"></i>
+            <h3>Farm-to-Table Quality</h3>
+            <p>Directly sourced from trusted local farmers to ensure highest quality and traceability.</p>
+        </div>
+
+        <!-- Service 4 -->
+        <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 20px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-box-open fa-3x" style="color: #00BCD4; margin-bottom: 15px;"></i>
+            <h3>Seasonal & Curated Boxes</h3>
+            <p>Curated boxes of seasonal fruits and vegetables promoting healthy eating and reducing food waste.</p>
+        </div>
+
+        <!-- Service 5 -->
+        <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 20px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-hand-holding-heart fa-3x" style="color: #E91E63; margin-bottom: 15px;"></i>
+            <h3>Personalized Orders</h3>
+            <p>Choose your favorite fruits and vegetables. Special requests are welcomed.</p>
+        </div>
+
+        <!-- Service 6 -->
+        <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 20px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-recycle fa-3x" style="color: #4CAF50; margin-bottom: 15px;"></i>
+            <h3>Sustainability Focused</h3>
+            <p>Eco-friendly packaging and sustainable farming practices supporting local farmers and communities.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

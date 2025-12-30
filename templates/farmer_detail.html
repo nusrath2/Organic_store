@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="width: 90%; margin: 40px auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <!-- Back to Dashboard -->
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'admin_dashboard' %}">
+            <button style="padding: 8px 15px; background-color: #007bff; color:white; border:none; border-radius:5px; cursor:pointer;">
+                ← Back to Dashboard
+            </button>
+        </a>
+    </div>
+
+    <!-- Farmer Detail -->
+    <div style="display: flex; gap: 30px; padding: 20px; border: 1px solid #ddd; border-radius:10px; background:#fff; align-items:center;">
+        <div style="flex: 2;">
+            <h2>{{ farmer.user.username }}</h2>
+            <p><strong>Farm Name:</strong> {{ farmer.farm_name }}</p>
+            <p><strong>Email:</strong> {{ farmer.user.email }}</p>
+            <p><strong>Status:</strong>
+                {% if farmer.is_verified %}
+                    <span style="color: green;">Active</span>
+                {% else %}
+                    <span style="color: red;">Blocked</span>
+                {% endif %}
+            </p>
+            <p><strong>Rating:</strong> {{ farmer.rating|floatformat:1 }} ⭐ ({{ farmer.rating_count }} reviews)</p>
+        </div>
+
+        <div style="flex: 1;">
+            {% if farmer.image %}
+                <img src="{{ farmer.image.url }}" alt="{{ farmer.user.username }}" 
+                     style="width: 180px; height: 180px; object-fit: cover; border-radius: 10px;">
+            {% else %}
+                <div style="width: 180px; height: 180px; background: #eee; display:flex; justify-content:center; align-items:center; border-radius:10px; color:#999;">
+                    No Image
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Products from orders -->
+    <h3 style="margin-top: 30px;">Products Sold by {{ farmer.user.username }}</h3>
+    <div style="background:#fff; padding: 20px; border-radius:10px; border:1px solid #ddd;">
+        <ul style="list-style:none; padding-left:0;">
+            {% for data in products_data %}
+            <li style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                <p><strong>Product:</strong> {{ data.product.name }}</p>
+                <p><strong>Rating:</strong> {{ data.product.rating|floatformat:1 }} ⭐</p>
+
+                <p><strong>Orders:</strong></p>
+                <ul>
+                    {% for item in data.orders %}
+                        <li>
+                            Order #{{ item.order.id }} | Customer: {{ item.order.user.username }} | Qty: {{ item.quantity }} | Status: {{ item.order.status }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}

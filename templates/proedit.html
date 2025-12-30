@@ -1,0 +1,6 @@
+<h1> EDIT PRODUCT {{pro.name}}</h1>
+<form action=""method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+{{form}}
+<button type="submit">Edit</button>
+</form>

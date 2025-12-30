@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <!-- Hero Section -->
+    <div class="container text-center mb-5">
+        <h1 class="display-4">Contact Us</h1>
+        <p class="lead">We’d love to hear from you! Send us your questions, suggestions, or feedback.</p>
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="POST" action="{% url 'contact' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Info Section -->
+    <div class="container text-center">
+        <h2>Our Contact Information</h2>
+        <p><strong>Email:</strong> info@organicharvest.com</p>
+        <p><strong>Phone:</strong> +91 8993451230 </p>
+        <p><strong>Address:</strong> 525,Green City,Cube street,Kochi,India</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="width:90%; margin:30px auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <h2 style="text-align:center; margin-bottom:30px; color:#333;">Admin Dashboard</h2>
+
+    <!-- Farmers Section -->
+    <div style="margin-bottom:40px;">
+        <h3 style="color:#555; margin-bottom:10px;">Farmers</h3>
+        <table style="width:100%; border-collapse:collapse; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <thead>
+                <tr style="background-color:#2196F3; color:white;">
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Farm Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Rating</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for farmer in farmers %}
+                <tr style="text-align:center; border-bottom:1px solid #ddd;">
+                    <td>{{ farmer.user.id }}</td>
+                    <td><a href="{% url 'farmer_detail' farmer.id %}">{{ farmer.user.username }}</a></td>
+                    <td>{{ farmer.farm_name }}</td>
+                    <td>{{ farmer.user.email }}</td>
+                    <td>
+                        {% if farmer.is_verified %}
+                            <span style="color:green;">Active</span>
+                        {% else %}
+                            <span style="color:red;">Blocked</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ farmer.rating|default:"-" }}</td>
+                    <td>
+                        {% if farmer.is_verified %}
+                            <a href="{% url 'block_farmer' farmer.id %}" style="color:red;">Block</a>
+                        {% else %}
+                            <a href="{% url 'accept_farmer' farmer.id %}" style="color:green;">Accept</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align:center;">No farmers found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Customers Section -->
+    <div style="margin-bottom:40px;">
+        <h3 style="color:#555; margin-bottom:10px;">Customers</h3>
+        <table style="width:100%; border-collapse:collapse; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <thead>
+                <tr style="background-color:#4CAF50; color:white;">
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr style="text-align:center; border-bottom:1px solid #ddd;">
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.username }}</td>
+                    <td>{{ customer.email }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align:center;">No customers found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Orders Section -->
+    <div style="margin-bottom:40px;">
+        <h3 style="color:#555; margin-bottom:10px;">Orders</h3>
+        <table style="width:100%; border-collapse:collapse; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <thead>
+                <tr style="background-color:#FF9800; color:white;">
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Status</th>
+                    <th>Payment Status</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr style="text-align:center; border-bottom:1px solid #ddd;">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.user.username }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.payment_status }}</td>
+                    <td>₹{{ order.total_amount }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center;">No orders found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

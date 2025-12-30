@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.cart-container {
+    width: 80%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th, .cart-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.cart-table th {
+    background-color: #f8f8f8;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+input[type=number] {
+    width: 50px;
+    text-align: center;
+    padding: 3px;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.grand-total {
+    text-align: right;
+    font-size: 1.2em;
+    margin-top: 15px;
+}
+
+.continue-shopping {
+    margin-top: 20px;
+    display: inline-block;
+}
+</style>
+
+<div class="cart-container">
+<h2>Your Shopping Cart</h2>
+
+{% if items %}
+<table class="cart-table">
+  <tr>
+    <th>Product</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Total</th>
+    <th>Action</th>
+  </tr>
+
+  {% for item in items %}
+  <tr>
+    <td>{{ item.product.name }}</td>
+    <td>₹{{ item.product.price }}</td>
+    <td class="cart-actions">
+      <button onclick="changeQty('{{ item.id }}', -1)">−</button>
+      <input type="number"
+             id="qty-{{ item.id }}"
+             value="{{ item.quantity }}"
+             min="0"
+             onchange="setQty('{{ item.id }}')">
+      <button onclick="changeQty('{{ item.id }}', 1)">+</button>
+      
+    </td>
+    <td>₹{{ item.total_price }}</td>
+    <td>
+      <a href="{% url 'remove_from_cart' item.id %}">
+        <button style="background-color:#f44336;">Remove</button>
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<div class="grand-total">
+    <strong>Grand Total: ₹{{ total }}</strong>
+</div>
+
+<a href="{% url 'allproducts_all' %}" class="continue-shopping">
+    <button>Continue Shopping</button>
+</a>
+<a href="{% url 'place_order' %}">
+    <button style="margin-top:15px; background-color:#008CBA;">Place Order</button>
+</a>
+
+<script>
+function changeQty(itemId, delta) {
+    var input = document.getElementById('qty-' + itemId);
+    var newQty = parseInt(input.value) + delta;
+    if (newQty < 0) newQty = 0;
+
+    var url = "{% url 'update_cart' 0 %}".replace('/0/', '/' + itemId + '/');
+    window.location.href = url + "?quantity=" + newQty;
+}
+
+function setQty(itemId) {
+    var qty = document.getElementById('qty-' + itemId).value;
+    var url = "{% url 'update_cart' 0 %}".replace('/0/', '/' + itemId + '/');
+    window.location.href = url + "?quantity=" + qty;
+}
+
+function addMore(itemId) {
+    var input = document.getElementById('qty-' + itemId);
+    var newQty = parseInt(input.value) + 1;
+    var url = "{% url 'update_cart' 0 %}".replace('/0/', '/' + itemId + '/');
+    window.location.href = url + "?quantity=" + newQty;
+}
+</script>
+
+{% else %}
+<p>Your cart is empty.</p>
+<a href="{% url 'allproducts_all' %}">
+    <button>Go to Products</button>
+</a>
+{% endif %}
+</div>
+
+{% endblock %}

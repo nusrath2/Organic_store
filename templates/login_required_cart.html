@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .product-box {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .product-box img {
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 14px;
+        margin: 6px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .btn-view { background: #1976d2; }
+    .btn-cart { background: #388e3c; }
+    .btn-back { background: #757575; }
+
+    .login-warning {
+        color: red;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+</style>
+
+
+<div class="product-box">
+
+    <h2>{{ product.name }}</h2>
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}" width="250" height="250">
+    {% endif %}
+
+    <p style="font-size:18px;">₹ {{ product.price }}</p>
+
+    {% if product.stock > 0 %}
+        <p style="color:green;">In Stock</p>
+    {% else %}
+        <p style="color:red;">Out of Stock</p>
+    {% endif %}
+
+    <hr>
+
+    <p class="login-warning">
+        Login as customer to add this product to cart
+    </p>
+
+    <!-- LOGIN BUTTON -->
+    <button class="btn btn-cart"
+            onclick="window.location.href='{% url 'login_page' %}?next={{ request.path }}'">
+        Login
+    </button>
+
+    <br>
+
+    <!-- BACK TO HOME -->
+    <a href="{% url 'customer_home' %}" class="btn btn-back">
+        Back to Home
+    </a>
+
+</div>
+
+{% endblock %}

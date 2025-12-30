@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="width:80%; margin:20px auto; font-family:Arial, sans-serif;">
+    <h2>Payment Confirmation</h2>
+
+    <p>Order #{{ order.id }} has been successfully processed.</p>
+    <p>Status: <strong>{{ order.status }}</strong></p>
+    <p>Payment Status: <strong>{{ order.payment_status }}</strong></p>
+
+    <form method="POST" id="ratingForm">
+        {% csrf_token %}
+
+        {% for item in items %}
+        <div style="margin-top: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+            <h4>Product: {{ item.product.name }}</h4>
+            <h5>Farmer: {{ item.product.farmer.name }}</h5>
+
+            <!-- Hidden inputs for ratings -->
+            <input type="hidden" name="product_rating_{{ item.id }}" id="product_rating_{{ item.id }}">
+            <input type="hidden" name="farmer_rating_{{ item.id }}" id="farmer_rating_{{ item.id }}">
+
+            <!-- Product rating -->
+            <div class="stars product-stars" data-item-id="{{ item.id }}">
+                <span style="margin-right:5px;">Product Rating:</span>
+                {% for i in "12345" %}
+                <span class="star" data-value="{{ forloop.counter }}">&#9733;</span>
+                {% endfor %}
+            </div>
+
+            <!-- Farmer rating -->
+            <div class="stars farmer-stars" data-item-id="{{ item.id }}" style="margin-top:5px;">
+                <span style="margin-right:5px;">Farmer Rating:</span>
+                {% for i in "12345" %}
+                <span class="star" data-value="{{ forloop.counter }}">&#9733;</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Customer comment -->
+        <div style="margin-top: 20px; padding:15px; border:1px solid #ddd; border-radius:8px;">
+            <h3>Leave a Comment for Your Order</h3>
+
+            <label for="comment">Comment:</label><br>
+            <textarea name="comment" id="comment" rows="4" style="width:100%; padding:5px;" required></textarea>
+        </div>
+
+        <button type="submit" style="margin-top:20px; padding:10px 20px; background-color:#28a745; color:white; border:none; border-radius:5px;">
+            Submit Ratings & Comment
+        </button>
+    </form>
+</div>
+
+<style>
+.stars {
+    display: flex;
+    gap: 5px;
+    font-size: 30px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.star {
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.star.selected,
+.star.hovered {
+    color: #f39c12;
+}
+</style>
+
+<script>
+function setupStars(starClass, inputPrefix) {
+    document.querySelectorAll('.' + starClass).forEach(starContainer => {
+        const stars = starContainer.querySelectorAll('.star');
+        const itemId = starContainer.dataset.itemId;
+        const hiddenInput = document.getElementById(inputPrefix + itemId);
+
+        stars.forEach((star, index) => {
+            star.addEventListener('mouseover', () => {
+                stars.forEach((s, i) => s.classList.toggle('hovered', i <= index));
+            });
+
+            star.addEventListener('mouseout', () => {
+                stars.forEach((s, i) => s.classList.remove('hovered'));
+            });
+
+            star.addEventListener('click', () => {
+                hiddenInput.value = star.dataset.value;
+                stars.forEach((s, i) => s.classList.toggle('selected', i < star.dataset.value));
+            });
+        });
+    });
+}
+
+// Initialize star ratings
+setupStars('product-stars', 'product_rating_');
+setupStars('farmer-stars', 'farmer_rating_');
+</script>
+
+{% endblock %}
